@@ -5,3 +5,6 @@ django-cors-headers==4.6.0
 django-filter==24.3
 psycopg2-binary==2.9.10
 python-decouple==3.8
+
+pytest-django==4.8.0
+pytest==8.3.3
