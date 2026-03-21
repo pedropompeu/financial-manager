@@ -24,7 +24,9 @@ THIRD_PARTY_APPS = [
     'django_filters',
 ]
 
-LOCAL_APPS = []
+LOCAL_APPS = [
+    'apps.accounts',
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -104,3 +106,5 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'accounts.Usuario'
