@@ -1,0 +1,36 @@
+# Variáveis de ambiente (NUNCA versionar)
+.env
+.env.local
+.env.production
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Django
+*.sqlite3
+staticfiles/
+mediafiles/
+
+# Node / React
+node_modules/
+dist/
+.vite/
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# Sistema
+.DS_Store
+Thumbs.db

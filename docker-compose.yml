@@ -1,0 +1,71 @@
+services:
+
+  banco:
+    image: postgres:16-alpine
+    container_name: financial_banco
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NOME}
+      POSTGRES_USER: ${DB_USUARIO}
+      POSTGRES_PASSWORD: ${DB_SENHA}
+    volumes:
+      - dados_postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - financial_rede
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USUARIO} -d ${DB_NOME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: financial_backend
+    restart: unless-stopped
+    environment:
+      DEBUG: ${DEBUG}
+      SECRET_KEY: ${SECRET_KEY}
+      DB_NOME: ${DB_NOME}
+      DB_USUARIO: ${DB_USUARIO}
+      DB_SENHA: ${DB_SENHA}
+      DB_HOST: banco
+      DB_PORTA: 5432
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    networks:
+      - financial_rede
+    depends_on:
+      banco:
+        condition: service_healthy
+    command: python manage.py runserver 0.0.0.0:8000
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: financial_frontend
+    restart: unless-stopped
+    environment:
+      VITE_API_URL: http://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    networks:
+      - financial_rede
+    depends_on:
+      - backend
+
+volumes:
+  dados_postgres:
+
+networks:
+  financial_rede:
+    driver: bridge
