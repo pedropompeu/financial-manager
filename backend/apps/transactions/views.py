@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from apps.accounts.mixins import FiltroOrganizacaoMixin
+from .models import Categoria, Transacao
+from .serializers import CategoriaSerializer, TransacaoSerializer
 
-# Create your views here.
+
+class CategoriaViewSet(FiltroOrganizacaoMixin, viewsets.ModelViewSet):
+    serializer_class = CategoriaSerializer
+    queryset = Categoria.objects.all()
