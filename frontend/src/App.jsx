@@ -3,6 +3,7 @@ import { useAuth } from './contexts/AuthContext'
 import Layout from './components/Layout'
 import Login from './pages/Login'
 import Registro from './pages/Registro'
+import Dashboard from './pages/Dashboard'
 
 function RotaProtegida({ children }) {
   const { usuario, carregando } = useAuth()
@@ -21,10 +22,7 @@ export default function App() {
       <Route path="/registro" element={<Registro />} />
       <Route path="/dashboard" element={
         <RotaProtegida>
-          <div>
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Dashboard</h2>
-            <p className="text-gray-500 text-sm">Em construção...</p>
-          </div>
+          <Dashboard />
         </RotaProtegida>
       } />
       <Route path="/transacoes" element={
