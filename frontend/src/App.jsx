@@ -8,6 +8,8 @@ import Transacoes from './pages/Transacoes'
 import Usuarios from './pages/Usuarios'
 import Categorias from './pages/Categorias'
 import LandingPage from './pages/LandingPage'
+import BemVindo from './pages/BemVindo'
+import Onboarding from './pages/Onboarding'
 
 function RotaProtegida({ children }) {
   const { usuario, carregando } = useAuth()
@@ -45,6 +47,8 @@ export default function App() {
         </RotaProtegida>
       } />
       <Route path="/" element={<LandingPage />} />
+      <Route path="/bem-vindo" element={<BemVindo />} />
+      <Route path="/onboarding" element={<Onboarding />} />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   )

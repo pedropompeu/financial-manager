@@ -33,6 +33,7 @@ export function AuthProvider({ children }) {
 
   async function registro(dados) {
     const resposta = await api.post('/api/auth/registro/', dados)
+    await login(dados.email, dados.senha)
     return resposta.data
   }
 

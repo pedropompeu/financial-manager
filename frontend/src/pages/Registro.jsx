@@ -20,7 +20,7 @@ export default function Registro() {
     setCarregando(true)
     try {
       await registro(form)
-      navigate('/login')
+      navigate('/bem-vindo')
     } catch (err) {
       if (err.response?.data) setErros(err.response.data)
       else setErros({ geral: 'Erro ao criar organização.' })
