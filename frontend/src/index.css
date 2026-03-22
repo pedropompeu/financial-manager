@@ -11,28 +11,38 @@
   --cor-sucesso: #00b894;
   --cor-perigo: #d63031;
   --cor-texto: #0d0d0d;
-  --cor-texto-suave: #525b5e;
+  --cor-texto-suave: #636e72;
   --cor-texto-fraco: #b2bec3;
-  --cor-fundo: #bebec0;
-  --cor-superficie: #ffffff;
-  --cor-borda: #e0e0e0;
-  --cor-borda-hover: #b2bec3;
-  --radius: 20px;
-  --sombra: 1 1px 3px rgba(1,1,1,0.8);
+  --cor-fundo: #e8e8e2;
+  --cor-superficie: #e8e8e2;
+  --cor-borda: #d0d0ca;
+  --radius: 4px;
+  --sombra: 0 4px 16px rgba(0,0,0,0.10);
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 13px;
   color: var(--cor-texto);
-  background: var(--cor-fundo);
+  background: #f0f0eb;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3 { font-weight: 500; }
+h1 { font-size: 20px; font-weight: 600; color: var(--cor-texto); }
+h2 { font-size: 18px; font-weight: 600; color: var(--cor-texto); }
+h3 { font-size: 14px; font-weight: 500; color: var(--cor-texto); }
+
+p { line-height: 1.6; }
+
+input, select, textarea, button {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #c0c0ba; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #a0a09a; }
