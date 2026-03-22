@@ -1,16 +1,12 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { botaoPrimario, input } from '../components/ui/styles'
 
 export default function Registro() {
   const { registro } = useAuth()
   const navigate = useNavigate()
-  const [form, setForm] = useState({
-    nome_organizacao: '',
-    nome_usuario: '',
-    email: '',
-    senha: '',
-  })
+  const [form, setForm] = useState({ nome_organizacao: '', nome_usuario: '', email: '', senha: '' })
   const [erros, setErros] = useState({})
   const [carregando, setCarregando] = useState(false)
 
@@ -24,68 +20,118 @@ export default function Registro() {
     setCarregando(true)
     try {
       await registro(form)
-      navigate('/login?registrado=1')
+      navigate('/login')
     } catch (err) {
-      if (err.response?.data) {
-        setErros(err.response.data)
-      } else {
-        setErros({ geral: 'Erro ao criar organização. Tente novamente.' })
-      }
+      if (err.response?.data) setErros(err.response.data)
+      else setErros({ geral: 'Erro ao criar organização.' })
     } finally {
       setCarregando(false)
     }
   }
 
+  const campos = [
+    { label: 'Nome da organização', name: 'nome_organizacao', type: 'text', placeholder: 'Minha Empresa Ltda' },
+    { label: 'Seu nome', name: 'nome_usuario', type: 'text', placeholder: 'João Silva' },
+    { label: 'E-mail', name: 'email', type: 'email', placeholder: 'joao@empresa.com' },
+    { label: 'Senha', name: 'senha', type: 'password', placeholder: '••••••••' },
+  ]
+
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 w-full max-w-md p-8">
-        <h1 className="text-2xl font-semibold text-gray-800 mb-1">Criar organização</h1>
-        <p className="text-sm text-gray-500 mb-6">Configure sua conta no FinancialManager</p>
-
-        {erros.geral && (
-          <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3 mb-4">
-            {erros.geral}
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
+      <div style={{
+        width: '420px', flexShrink: 0,
+        background: '#1a1a2e',
+        display: 'flex', flexDirection: 'column',
+        justifyContent: 'space-between',
+        padding: '48px 40px',
+      }}>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '64px' }}>
+            <div style={{
+              width: '32px', height: '32px', background: '#0984e3',
+              borderRadius: '4px', display: 'flex', alignItems: 'center',
+              justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: '16px',
+            }}>F</div>
+            <span style={{ color: '#fff', fontWeight: 600, fontSize: '16px' }}>FinancialManager</span>
           </div>
-        )}
-
-        <form onSubmit={enviar} className="space-y-4">
+          <h2 style={{ color: '#fff', fontSize: '28px', fontWeight: 600, lineHeight: 1.3, marginBottom: '16px' }}>
+            Comece a controlar suas finanças hoje
+          </h2>
+          <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '14px', lineHeight: 1.7 }}>
+            Configure sua empresa em menos de 2 minutos e tenha controle total do seu fluxo de caixa.
+          </p>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {[
-            { label: 'Nome da organização', name: 'nome_organizacao', type: 'text', placeholder: 'Minha Empresa' },
-            { label: 'Seu nome', name: 'nome_usuario', type: 'text', placeholder: 'João Silva' },
-            { label: 'E-mail', name: 'email', type: 'email', placeholder: 'joao@empresa.com' },
-            { label: 'Senha', name: 'senha', type: 'password', placeholder: '••••••••' },
-          ].map(({ label, name, type, placeholder }) => (
-            <div key={name}>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-              <input
-                type={type}
-                name={name}
-                value={form[name]}
-                onChange={atualizar}
-                required
-                placeholder={placeholder}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-              {erros[name] && (
-                <p className="text-red-500 text-xs mt-1">{erros[name]}</p>
-              )}
+            { icone: '✓', texto: 'Cadastro gratuito' },
+            { icone: '✓', texto: 'Sem cartão de crédito' },
+            { icone: '✓', texto: 'Dados 100% seguros' },
+          ].map(({ icone, texto }) => (
+            <div key={texto} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{
+                width: '20px', height: '20px', borderRadius: '50%',
+                background: '#00b894', color: '#fff',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: '11px', fontWeight: 700, flexShrink: 0,
+              }}>{icone}</span>
+              <span style={{ color: 'rgba(255,255,255,0.55)', fontSize: '13px' }}>{texto}</span>
             </div>
           ))}
-          <button
-            type="submit"
-            disabled={carregando}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-lg text-sm transition disabled:opacity-50"
-          >
-            {carregando ? 'Criando...' : 'Criar organização'}
-          </button>
-        </form>
+        </div>
+      </div>
 
-        <p className="text-sm text-center text-gray-500 mt-6">
-          Já tem conta?{' '}
-          <Link to="/login" className="text-indigo-600 hover:underline font-medium">
-            Entrar
-          </Link>
-        </p>
+      <div style={{
+        flex: 1, background: '#e0e0da',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: '48px',
+      }}>
+        <div style={{ width: '100%', maxWidth: '380px' }}>
+          <h1 style={{ fontSize: '22px', fontWeight: 600, color: '#0d0d0d', marginBottom: '4px' }}>
+            Criar sua organização
+          </h1>
+          <p style={{ fontSize: '13px', color: '#888', marginBottom: '32px' }}>
+            Já tem conta?{' '}
+            <Link to="/login" style={{ color: '#0984e3', textDecoration: 'none', fontWeight: 500 }}>
+              Entrar
+            </Link>
+          </p>
+
+          {erros.geral && (
+            <div style={{
+              background: '#d6303120', border: '1px solid #d6303140',
+              color: '#d63031', fontSize: '13px', borderRadius: '4px',
+              padding: '10px 14px', marginBottom: '20px',
+            }}>
+              {erros.geral}
+            </div>
+          )}
+
+          <form onSubmit={enviar} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {campos.map(({ label, name, type, placeholder }) => (
+              <div key={name}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#444', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  {label}
+                </label>
+                <input
+                  type={type} name={name} value={form[name]}
+                  onChange={atualizar} required placeholder={placeholder}
+                  style={input}
+                  onFocus={e => e.target.style.borderColor = '#0984e3'}
+                  onBlur={e => e.target.style.borderColor = '#d0d0ca'}
+                />
+                {erros[name] && <p style={{ color: '#d63031', fontSize: '11px', marginTop: '4px' }}>{erros[name]}</p>}
+              </div>
+            ))}
+            <button
+              type="submit" disabled={carregando}
+              style={{ ...botaoPrimario, width: '100%', padding: '10px', marginTop: '8px', opacity: carregando ? 0.6 : 1 }}
+              onMouseEnter={e => e.target.style.background = '#0773c5'}
+              onMouseLeave={e => e.target.style.background = '#0984e3'}
+            >
+              {carregando ? 'Criando...' : 'Criar organização'}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   )
