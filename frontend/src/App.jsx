@@ -6,6 +6,7 @@ import Registro from './pages/Registro'
 import Dashboard from './pages/Dashboard'
 import Transacoes from './pages/Transacoes'
 import Usuarios from './pages/Usuarios'
+import Categorias from './pages/Categorias'
 
 function RotaProtegida({ children }) {
   const { usuario, carregando } = useAuth()
@@ -34,10 +35,7 @@ export default function App() {
       } />
       <Route path="/categorias" element={
         <RotaProtegida>
-          <div>
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Categorias</h2>
-            <p className="text-gray-500 text-sm">Em construção...</p>
-          </div>
+          <Categorias />
         </RotaProtegida>
       } />
       <Route path="/usuarios" element={
