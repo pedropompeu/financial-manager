@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard'
 import Transacoes from './pages/Transacoes'
 import Usuarios from './pages/Usuarios'
 import Categorias from './pages/Categorias'
+import LandingPage from './pages/LandingPage'
 
 function RotaProtegida({ children }) {
   const { usuario, carregando } = useAuth()
@@ -43,7 +44,8 @@ export default function App() {
           <Usuarios />
         </RotaProtegida>
       } />
-      <Route path="*" element={<Navigate to="/login" />} />
+      <Route path="/" element={<LandingPage />} />
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   )
 }
