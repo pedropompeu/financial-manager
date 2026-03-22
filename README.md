@@ -1,6 +1,6 @@
 # FinancialManager
 
-Plataforma SaaS de gestão financeira multi-tenant desenvolvida como projeto de portfólio.
+Sistema SaaS de gestão financeira para pequenas empresas — controle de fluxo de caixa, categorias e relatórios em tempo real, com arquitetura multi-tenant e autenticação segura.
 
 ## Sobre o projeto
 
