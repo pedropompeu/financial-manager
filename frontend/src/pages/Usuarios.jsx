@@ -32,7 +32,7 @@ export default function Usuarios() {
         </div>
       )}
 
-      <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+      <div style={{background: "#e8e8e2", borderRadius: "6px", border: "none", boxShadow: "0 4px 16px rgba(0,0,0,0.10)", overflow: "hidden"}}>
         <table className="w-full text-sm">
           <thead className="bg-gray-50 border-b border-gray-100">
             <tr>

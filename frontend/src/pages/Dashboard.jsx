@@ -3,7 +3,7 @@ import api from '../services/api'
 
 function CardMetrica({ titulo, valor, cor }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 p-5">
+    <div style={{background: '#e8e8e2', borderRadius: '6px', border: 'none', padding: '20px', boxShadow: '0 4px 16px rgba(0,0,0,0.10)', transform: 'translateY(0)'}}>
       <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-2">{titulo}</p>
       <p className={`text-2xl font-semibold ${cor}`}>
         {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor)}
@@ -85,7 +85,7 @@ export default function Dashboard() {
             <CardMetrica titulo="Total despesas" valor={resumo?.total_despesas || 0} cor="text-red-500" />
           </div>
 
-          <div className="bg-white rounded-xl border border-gray-100 p-5">
+          <div style={{background: '#e8e8e2', borderRadius: '6px', border: 'none', padding: '20px', boxShadow: '0 4px 16px rgba(0,0,0,0.10)', transform: 'translateY(0)'}}>
             <h3 className="text-sm font-medium text-gray-700 mb-4">Despesas por categoria</h3>
             {categorias.length === 0 ? (
               <p className="text-sm text-gray-400">Nenhuma despesa no período.</p>

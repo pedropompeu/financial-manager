@@ -88,7 +88,7 @@ export default function Transacoes() {
         </button>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-100 p-4 mb-4 grid grid-cols-4 gap-3">
+      <div style={{background: "#e8e8e2", borderRadius: "6px", border: "none", padding: "16px", marginBottom: "16px", boxShadow: "0 4px 16px rgba(0,0,0,0.10)"}} className="grid grid-cols-4 gap-3">
         <select name="tipo" value={filtros.tipo} onChange={atualizarFiltro}
           className="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">
           <option value="">Todos os tipos</option>
@@ -108,7 +108,7 @@ export default function Transacoes() {
           className="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+      <div style={{background: "#e8e8e2", borderRadius: "6px", border: "none", boxShadow: "0 4px 16px rgba(0,0,0,0.10)", overflow: "hidden"}}>
         <table className="w-full text-sm">
           <thead className="bg-gray-50 border-b border-gray-100">
             <tr>

@@ -134,7 +134,7 @@ export default function Categorias() {
           </div>
         ) : categorias.map((cat) => (
           <div key={cat.id}
-            className="bg-white rounded-xl border border-gray-100 p-4 flex items-center justify-between hover:border-gray-200 transition">
+            style={{background: "#e8e8e2", borderRadius: "6px", border: "none", padding: "16px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 4px 16px rgba(0,0,0,0.10)"}}>
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-lg flex items-center justify-center"
                 style={{ background: cat.cor + '20' }}>
