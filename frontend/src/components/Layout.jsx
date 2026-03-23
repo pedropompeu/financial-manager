@@ -7,6 +7,7 @@ const itensNav = [
   { label: 'Transações', path: '/transacoes', icone: '↕' },
   { label: 'Categorias', path: '/categorias', icone: '⊞' },
   { label: 'Usuários', path: '/usuarios', icone: '◉' },
+  { label: 'Configurações', path: '/configuracoes', icone: '⚙' },
 ]
 
 const titulos = {
@@ -14,6 +15,7 @@ const titulos = {
   '/transacoes': 'Transações',
   '/categorias': 'Categorias',
   '/usuarios': 'Usuários',
+  '/configuracoes': 'Configurações',
 }
 
 export default function Layout({ children }) {
