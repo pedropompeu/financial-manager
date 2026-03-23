@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import api from '../services/api'
+import { useAtualizacao } from '../contexts/AtualizacaoContext'
 
 export default function FormTransacao({ transacao, onSalvo, onCancelar }) {
   const [categorias, setCategorias] = useState([])
@@ -10,6 +11,7 @@ export default function FormTransacao({ transacao, onSalvo, onCancelar }) {
     data: new Date().toISOString().split('T')[0],
     categoria: '',
   })
+  const { atualizar: atualizarDashboard } = useAtualizacao()
   const [erros, setErros] = useState({})
   const [carregando, setCarregando] = useState(false)
 
@@ -44,6 +46,7 @@ export default function FormTransacao({ transacao, onSalvo, onCancelar }) {
       } else {
         await api.post('/api/transacoes/', payload)
       }
+      atualizarDashboard()
       onSalvo()
     } catch (err) {
       if (err.response?.data) setErros(err.response.data)

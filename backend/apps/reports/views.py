@@ -40,6 +40,44 @@ class ResumoFinanceiroView(APIView):
         })
 
 
+class ReceitasPorCategoriaView(APIView):
+    permission_classes = [MembroOrganizacao]
+
+    def get(self, request):
+        organizacao = request.user.organizacao
+        data_inicio = request.query_params.get('data_inicio')
+        data_fim = request.query_params.get('data_fim')
+
+        transacoes = Transacao.objects.filter(
+            organizacao=organizacao,
+            tipo=Transacao.TIPO_RECEITA,
+        )
+
+        if data_inicio:
+            transacoes = transacoes.filter(data__gte=data_inicio)
+        if data_fim:
+            transacoes = transacoes.filter(data__lte=data_fim)
+
+        por_categoria = (
+            transacoes
+            .values('categoria__id', 'categoria__nome', 'categoria__cor')
+            .annotate(total=Sum('valor'))
+            .order_by('-total')
+        )
+
+        resultado = [
+            {
+                'categoria_id': item['categoria__id'],
+                'categoria_nome': item['categoria__nome'] or 'Sem categoria',
+                'categoria_cor': item['categoria__cor'] or '#888888',
+                'total': item['total'],
+            }
+            for item in por_categoria
+        ]
+
+        return Response(resultado)
+
+
 class DespesasPorCategoriaView(APIView):
     permission_classes = [MembroOrganizacao]
 
