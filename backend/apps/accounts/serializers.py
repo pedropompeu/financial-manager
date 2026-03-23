@@ -38,6 +38,28 @@ class RegistroOrganizacaoSerializer(serializers.Serializer):
         return usuario
 
 
+class CriarUsuarioSerializer(serializers.Serializer):
+    nome = serializers.CharField(max_length=255)
+    email = serializers.EmailField()
+    perfil = serializers.ChoiceField(choices=['admin', 'colaborador'])
+    senha = serializers.CharField(min_length=8, write_only=True)
+
+    def validate_email(self, valor):
+        if Usuario.objects.filter(email=valor).exists():
+            raise serializers.ValidationError('Este e-mail já está cadastrado.')
+        return valor
+
+    def create(self, validated_data):
+        organizacao = self.context['request'].user.organizacao
+        return Usuario.objects.create_user(
+            email=validated_data['email'],
+            password=validated_data['senha'],
+            nome=validated_data['nome'],
+            organizacao=organizacao,
+            perfil=validated_data['perfil'],
+        )
+
+
 class UsuarioSerializer(serializers.ModelSerializer):
     organizacao_nome = serializers.CharField(
         source='organizacao.nome', read_only=True
