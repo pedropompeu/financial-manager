@@ -1,51 +1,18 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useBreakpoint } from '../hooks/useBreakpoint'
 
-const corPrimaria = '#0984e3'
-const corSecundaria = '#1a1a2e'
-const corSucesso = '#00b894'
-const corTexto = '#0d0d0d'
-const corTextoSuave = '#636e72'
-const corFundo = '#f0f0eb'
-const corCard = '#e8e8e2'
-
-const cssResponsivo = `
-  @media (max-width: 768px) {
-    .nav-container { padding: 0 20px !important; }
-    .nav-desktop { display: none !important; }
-    .nav-mobile-btn { display: block !important; }
-    
-    .hero-section { 
-      flex-direction: column !important; 
-      padding: 64px 20px 40px !important; 
-      gap: 32px !important;
-    }
-    .hero-mockup { width: 100% !important; box-sizing: border-box !important; }
-    .hero-title { font-size: 36px !important; }
-    
-    .func-section, .como-funciona-section, .precos-section { padding: 64px 20px !important; }
-    
-    .func-grid { grid-template-columns: 1fr !important; }
-    .como-funciona-grid { grid-template-columns: 1fr !important; }
-    .precos-grid { grid-template-columns: 1fr !important; }
-    
-    .rodape-section { padding: 48px 20px 24px !important; }
-    .rodape-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
-    .rodape-bottom { flex-direction: column !important; gap: 16px !important; text-align: center; }
-  }
-  @media (min-width: 769px) and (max-width: 1024px) {
-    .como-funciona-grid { grid-template-columns: repeat(2, 1fr) !important; }
-    .rodape-grid { grid-template-columns: repeat(2, 1fr) !important; }
-  }
-  @media (min-width: 769px) {
-    .nav-mobile-btn { display: none !important; }
-  }
-`
+const COR_PRIMARIA = '#0984e3'
+const COR_SECUNDARIA = '#1a1a2e'
+const COR_SUCESSO = '#00b894'
+const COR_TEXTO = '#0d0d0d'
+const COR_TEXTO_SUAVE = '#636e72'
+const COR_FUNDO = '#f0f0eb'
+const COR_CARD = '#e8e8e2'
 
 export default function LandingPage() {
   return (
-    <div style={{ fontFamily: "'Inter', sans-serif", background: corFundo, color: corTexto }}>
-      <style>{cssResponsivo}</style>
+    <div style={{ fontFamily: "'Inter', sans-serif", background: COR_FUNDO, color: COR_TEXTO }}>
       <Navbar />
       <Hero />
       <Funcionalidades />
@@ -57,73 +24,89 @@ export default function LandingPage() {
 }
 
 function Navbar() {
+  const { isMobile } = useBreakpoint()
   const [menuAberto, setMenuAberto] = useState(false)
 
   return (
-    <nav className="nav-container" style={{
+    <nav style={{
       position: 'sticky', top: 0, zIndex: 100,
-      background: corSecundaria,
-      padding: '0 64px', height: '60px',
+      background: COR_SECUNDARIA,
+      padding: isMobile ? '0 20px' : '0 64px',
+      height: '60px',
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         <div style={{
-          width: '30px', height: '30px', background: corPrimaria,
+          width: '30px', height: '30px', background: COR_PRIMARIA,
           borderRadius: '4px', display: 'flex', alignItems: 'center',
           justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: '15px',
         }}>F</div>
         <span style={{ color: '#fff', fontWeight: 600, fontSize: '15px' }}>FinancialManager</span>
       </div>
-      <div className="nav-desktop" style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-        {['Funcionalidades', 'Como funciona', 'Preços'].map((item) => (
-          <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} style={{
-            color: 'rgba(255,255,255,0.55)', fontSize: '13px',
-            textDecoration: 'none', transition: 'color 0.15s',
-          }}
-            onMouseEnter={e => e.target.style.color = '#fff'}
-            onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.55)'}
-          >{item}</a>
-        ))}
-      </div>
-      <div className="nav-desktop" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-        <Link to="/login" style={{
-          color: 'rgba(255,255,255,0.7)', fontSize: '13px',
-          textDecoration: 'none', fontWeight: 500,
-        }}>Entrar</Link>
-        <Link to="/registro" style={{
-          background: corPrimaria, color: '#fff',
-          padding: '8px 18px', borderRadius: '4px',
-          fontSize: '13px', fontWeight: 500, textDecoration: 'none',
-          transition: 'background 0.15s',
-        }}>Começar grátis</Link>
-      </div>
 
-      <button className="nav-mobile-btn" onClick={() => setMenuAberto(!menuAberto)} style={{
-        background: 'transparent', border: 'none', color: '#fff', fontSize: '24px', cursor: 'pointer', padding: '0'
-      }}>
-        ☰
-      </button>
+      {!isMobile && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+          {['Funcionalidades', 'Como funciona', 'Preços'].map((item) => (
+            <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} style={{
+              color: 'rgba(255,255,255,0.55)', fontSize: '13px',
+              textDecoration: 'none', transition: 'color 0.15s',
+            }}
+              onMouseEnter={e => e.target.style.color = '#fff'}
+              onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.55)'}
+            >{item}</a>
+          ))}
+        </div>
+      )}
 
-      {menuAberto && (
+      {!isMobile ? (
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <Link to="/login" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', textDecoration: 'none', fontWeight: 500 }}>
+            Entrar
+          </Link>
+          <Link to="/registro" style={{
+            background: COR_PRIMARIA, color: '#fff', padding: '8px 18px',
+            borderRadius: '4px', fontSize: '13px', fontWeight: 500, textDecoration: 'none',
+          }}>Começar grátis</Link>
+        </div>
+      ) : (
+        <button onClick={() => setMenuAberto(!menuAberto)} style={{
+          background: 'transparent', border: 'none', color: '#fff',
+          fontSize: '22px', cursor: 'pointer', padding: '4px',
+        }}>
+          {menuAberto ? '✕' : '☰'}
+        </button>
+      )}
+
+      {isMobile && menuAberto && (
         <div style={{
           position: 'absolute', top: '60px', left: 0, right: 0,
-          background: corSecundaria, padding: '20px', borderTop: '1px solid rgba(255,255,255,0.1)',
-          display: 'flex', flexDirection: 'column', gap: '16px',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+          background: COR_SECUNDARIA, padding: '16px 20px',
+          display: 'flex', flexDirection: 'column', gap: '4px',
+          borderTop: '1px solid rgba(255,255,255,0.08)', zIndex: 200,
         }}>
           {['Funcionalidades', 'Como funciona', 'Preços'].map((item) => (
-            <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} 
+            <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`}
               onClick={() => setMenuAberto(false)}
-              style={{ color: '#fff', fontSize: '15px', textDecoration: 'none' }}>
+              style={{
+                color: 'rgba(255,255,255,0.7)', fontSize: '14px',
+                textDecoration: 'none', padding: '10px 0',
+                borderBottom: '1px solid rgba(255,255,255,0.06)',
+              }}>
               {item}
             </a>
           ))}
-          <div style={{ height: '1px', background: 'rgba(255,255,255,0.1)', margin: '8px 0' }} />
-          <Link to="/login" onClick={() => setMenuAberto(false)} style={{ color: '#fff', fontSize: '15px', textDecoration: 'none' }}>Entrar</Link>
-          <Link to="/registro" onClick={() => setMenuAberto(false)} style={{
-            background: corPrimaria, color: '#fff', textAlign: 'center',
-            padding: '10px', borderRadius: '4px', fontSize: '15px', fontWeight: 600, textDecoration: 'none'
-          }}>Começar grátis</Link>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '12px' }}>
+            <Link to="/login" style={{
+              color: 'rgba(255,255,255,0.7)', fontSize: '14px',
+              textDecoration: 'none', textAlign: 'center', padding: '10px',
+              border: '1px solid rgba(255,255,255,0.2)', borderRadius: '4px',
+            }}>Entrar</Link>
+            <Link to="/registro" style={{
+              background: COR_PRIMARIA, color: '#fff', padding: '10px',
+              borderRadius: '4px', fontSize: '14px', fontWeight: 600,
+              textDecoration: 'none', textAlign: 'center',
+            }}>Começar grátis</Link>
+          </div>
         </div>
       )}
     </nav>
@@ -131,39 +114,44 @@ function Navbar() {
 }
 
 function Hero() {
+  const { isMobile, isTablet } = useBreakpoint()
+  const ehPequeno = isMobile || isTablet
+
   return (
-    <section className="hero-section" style={{
-      background: corSecundaria,
-      padding: '96px 64px 80px',
-      display: 'flex', alignItems: 'center',
-      justifyContent: 'space-between', gap: '64px',
+    <section style={{
+      background: COR_SECUNDARIA,
+      padding: isMobile ? '48px 20px' : isTablet ? '64px 40px' : '96px 64px 80px',
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      flexDirection: ehPequeno ? 'column' : 'row',
+      gap: ehPequeno ? '40px' : '64px',
     }}>
-      <div style={{ maxWidth: '560px' }}>
+      <div style={{ maxWidth: ehPequeno ? '100%' : '560px' }}>
         <div style={{
-          display: 'inline-block', background: corSucesso + '20',
-          color: corSucesso, fontSize: '11px', fontWeight: 600,
+          display: 'inline-block', background: COR_SUCESSO + '20',
+          color: COR_SUCESSO, fontSize: '11px', fontWeight: 600,
           padding: '4px 12px', borderRadius: '4px', marginBottom: '24px',
           textTransform: 'uppercase', letterSpacing: '0.08em',
         }}>
           Novo — Relatórios em tempo real
         </div>
-        <h1 className="hero-title" style={{
-          fontSize: '48px', fontWeight: 700, color: '#fff',
+        <h1 style={{
+          fontSize: isMobile ? '32px' : '48px', fontWeight: 700, color: '#fff',
           lineHeight: 1.15, marginBottom: '20px', letterSpacing: '-0.02em',
         }}>
           Controle financeiro para sua empresa
         </h1>
         <p style={{
-          fontSize: '16px', color: 'rgba(255,255,255,0.5)',
-          lineHeight: 1.7, marginBottom: '40px', maxWidth: '480px',
+          fontSize: isMobile ? '14px' : '16px', color: 'rgba(255,255,255,0.5)',
+          lineHeight: 1.7, marginBottom: '40px',
         }}>
           Gerencie receitas, despesas e relatórios em tempo real. Simples, seguro e eficiente para pequenas e médias empresas.
         </p>
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
           <Link to="/registro" style={{
-            background: corPrimaria, color: '#fff',
-            padding: '12px 28px', borderRadius: '4px',
-            fontSize: '14px', fontWeight: 600, textDecoration: 'none',
+            background: COR_PRIMARIA, color: '#fff',
+            padding: isMobile ? '12px 20px' : '12px 28px',
+            borderRadius: '4px', fontSize: '14px', fontWeight: 600, textDecoration: 'none',
+            flex: isMobile ? 1 : 'none', textAlign: 'center',
           }}>
             Começar gratuitamente →
           </Link>
@@ -179,10 +167,10 @@ function Hero() {
         </p>
       </div>
 
-      <div className="hero-mockup" style={{
-        background: '#e8e8e2', borderRadius: '6px',
-        padding: '24px', width: '440px', flexShrink: 0,
-        boxShadow: '0 24px 64px rgba(0,0,0,0.3)',
+      <div style={{
+        background: COR_CARD, borderRadius: '6px', padding: '24px',
+        width: isMobile ? '100%' : isTablet ? '100%' : '440px',
+        flexShrink: 0, boxShadow: '0 24px 64px rgba(0,0,0,0.3)',
       }}>
         <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#d63031' }} />
@@ -191,8 +179,8 @@ function Hero() {
           <span style={{ fontSize: '12px', color: '#888', marginLeft: '8px' }}>Dashboard — Março 2026</span>
         </div>
         {[
-          { label: 'SALDO ATUAL', valor: 'R$ 4.530,00', cor: corTexto, borda: corPrimaria },
-          { label: 'TOTAL RECEITAS', valor: 'R$ 5.000,00', cor: corSucesso, borda: corSucesso },
+          { label: 'SALDO ATUAL', valor: 'R$ 4.530,00', cor: COR_TEXTO, borda: COR_PRIMARIA },
+          { label: 'TOTAL RECEITAS', valor: 'R$ 5.000,00', cor: COR_SUCESSO, borda: COR_SUCESSO },
           { label: 'TOTAL DESPESAS', valor: 'R$ 470,00', cor: '#d63031', borda: '#d63031' },
         ].map(({ label, valor, cor, borda }) => (
           <div key={label} style={{
@@ -200,7 +188,7 @@ function Hero() {
             marginBottom: '10px', borderLeft: `3px solid ${borda}`,
           }}>
             <p style={{ fontSize: '10px', fontWeight: 500, color: '#888', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>{label}</p>
-            <p style={{ fontSize: '20px', fontWeight: 700, color: cor }}>{valor}</p>
+            <p style={{ fontSize: isMobile ? '18px' : '20px', fontWeight: 700, color: cor }}>{valor}</p>
           </div>
         ))}
       </div>
@@ -209,6 +197,9 @@ function Hero() {
 }
 
 function Funcionalidades() {
+  const { isMobile, isTablet } = useBreakpoint()
+  const colunas = isMobile ? '1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'
+
   const items = [
     { icone: '↕', titulo: 'Controle de fluxo de caixa', desc: 'Registre receitas e despesas com categorias personalizadas e acompanhe seu saldo em tempo real.' },
     { icone: '▦', titulo: 'Relatórios inteligentes', desc: 'Visualize seus gastos por categoria, período e tipo. Tome decisões baseadas em dados.' },
@@ -219,19 +210,19 @@ function Funcionalidades() {
   ]
 
   return (
-    <section id="funcionalidades" className="func-section" style={{ padding: '96px 64px', background: corFundo }}>
-      <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-        <h2 style={{ fontSize: '32px', fontWeight: 700, color: corTexto, marginBottom: '12px' }}>
+    <section id="funcionalidades" style={{ padding: isMobile ? '64px 20px' : '96px 64px', background: COR_FUNDO }}>
+      <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+        <h2 style={{ fontSize: isMobile ? '24px' : '32px', fontWeight: 700, color: COR_TEXTO, marginBottom: '12px' }}>
           Tudo que você precisa para controlar suas finanças
         </h2>
-        <p style={{ fontSize: '15px', color: corTextoSuave, maxWidth: '480px', margin: '0 auto' }}>
-          Funcionalidades pensadas para pequenas e médias empresas que querem ter controle real do seu dinheiro.
+        <p style={{ fontSize: '15px', color: COR_TEXTO_SUAVE, maxWidth: '480px', margin: '0 auto' }}>
+          Funcionalidades pensadas para pequenas e médias empresas.
         </p>
       </div>
-      <div className="func-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', maxWidth: '1100px', margin: '0 auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: colunas, gap: '16px', maxWidth: '1100px', margin: '0 auto' }}>
         {items.map(({ icone, titulo, desc }) => (
           <div key={titulo} style={{
-            background: corCard, borderRadius: '6px', padding: '28px',
+            background: COR_CARD, borderRadius: '6px', padding: '24px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
             transition: 'transform 0.15s, box-shadow 0.15s',
           }}
@@ -239,13 +230,12 @@ function Funcionalidades() {
             onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)' }}
           >
             <div style={{
-              width: '40px', height: '40px', background: corPrimaria + '15',
+              width: '40px', height: '40px', background: COR_PRIMARIA + '15',
               borderRadius: '4px', display: 'flex', alignItems: 'center',
-              justifyContent: 'center', fontSize: '20px', color: corPrimaria,
-              marginBottom: '16px',
+              justifyContent: 'center', fontSize: '20px', color: COR_PRIMARIA, marginBottom: '16px',
             }}>{icone}</div>
-            <h3 style={{ fontSize: '14px', fontWeight: 600, color: corTexto, marginBottom: '8px' }}>{titulo}</h3>
-            <p style={{ fontSize: '13px', color: corTextoSuave, lineHeight: 1.6 }}>{desc}</p>
+            <h3 style={{ fontSize: '14px', fontWeight: 600, color: COR_TEXTO, marginBottom: '8px' }}>{titulo}</h3>
+            <p style={{ fontSize: '13px', color: COR_TEXTO_SUAVE, lineHeight: 1.6 }}>{desc}</p>
           </div>
         ))}
       </div>
@@ -254,6 +244,9 @@ function Funcionalidades() {
 }
 
 function ComoFunciona() {
+  const { isMobile, isTablet } = useBreakpoint()
+  const colunas = isMobile ? '1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)'
+
   const passos = [
     { num: '01', titulo: 'Crie sua organização', desc: 'Cadastre sua empresa em menos de 2 minutos. Sem burocracia, sem cartão de crédito.' },
     { num: '02', titulo: 'Configure suas categorias', desc: 'Crie categorias personalizadas para organizar suas receitas e despesas.' },
@@ -262,20 +255,20 @@ function ComoFunciona() {
   ]
 
   return (
-    <section id="como-funciona" className="como-funciona-section" style={{ padding: '96px 64px', background: corSecundaria }}>
-      <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-        <h2 style={{ fontSize: '32px', fontWeight: 700, color: '#fff', marginBottom: '12px' }}>
+    <section id="como-funciona" style={{ padding: isMobile ? '64px 20px' : '96px 64px', background: COR_SECUNDARIA }}>
+      <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+        <h2 style={{ fontSize: isMobile ? '24px' : '32px', fontWeight: 700, color: '#fff', marginBottom: '12px' }}>
           Como funciona
         </h2>
         <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.45)', maxWidth: '480px', margin: '0 auto' }}>
           Comece a usar em minutos. Sem complicação.
         </p>
       </div>
-      <div className="como-funciona-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '32px', maxWidth: '1100px', margin: '0 auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: colunas, gap: '32px', maxWidth: '1100px', margin: '0 auto' }}>
         {passos.map(({ num, titulo, desc }) => (
           <div key={num} style={{ textAlign: 'center' }}>
             <div style={{
-              width: '48px', height: '48px', background: corPrimaria,
+              width: '48px', height: '48px', background: COR_PRIMARIA,
               borderRadius: '4px', display: 'flex', alignItems: 'center',
               justifyContent: 'center', color: '#fff', fontWeight: 700,
               fontSize: '16px', margin: '0 auto 20px',
@@ -290,6 +283,9 @@ function ComoFunciona() {
 }
 
 function Precos() {
+  const { isMobile, isTablet } = useBreakpoint()
+  const colunas = isMobile ? '1fr' : isTablet ? '1fr' : 'repeat(3, 1fr)'
+
   const planos = [
     {
       nome: 'Gratuito', preco: 'R$ 0', periodo: '/mês',
@@ -301,7 +297,7 @@ function Precos() {
       nome: 'Pro', preco: 'R$ 49', periodo: '/mês',
       desc: 'Para empresas que querem crescer com controle.',
       destaque: true,
-      features: ['Até 5 usuários', 'Transações ilimitadas', 'Relatórios avançados', 'Suporte prioritário', 'Exportação em PDF'],
+      features: ['Até 5 usuários', 'Transações ilimitadas', 'Relatórios avançados', 'Suporte prioritário', 'Exportação em PDF', 'Assistente IA'],
     },
     {
       nome: 'Enterprise', preco: 'Sob consulta', periodo: '',
@@ -312,53 +308,52 @@ function Precos() {
   ]
 
   return (
-    <section id="preços" className="precos-section" style={{ padding: '96px 64px', background: corFundo }}>
-      <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-        <h2 style={{ fontSize: '32px', fontWeight: 700, color: corTexto, marginBottom: '12px' }}>
+    <section id="preços" style={{ padding: isMobile ? '64px 20px' : '96px 64px', background: COR_FUNDO }}>
+      <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+        <h2 style={{ fontSize: isMobile ? '24px' : '32px', fontWeight: 700, color: COR_TEXTO, marginBottom: '12px' }}>
           Planos e preços
         </h2>
-        <p style={{ fontSize: '15px', color: corTextoSuave, maxWidth: '480px', margin: '0 auto' }}>
+        <p style={{ fontSize: '15px', color: COR_TEXTO_SUAVE, maxWidth: '480px', margin: '0 auto' }}>
           Comece gratuitamente e faça upgrade quando precisar.
         </p>
       </div>
-      <div className="precos-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: colunas, gap: '20px', maxWidth: '900px', margin: '0 auto' }}>
         {planos.map(({ nome, preco, periodo, desc, destaque, features }) => (
           <div key={nome} style={{
-            background: destaque ? corSecundaria : corCard,
+            background: destaque ? COR_SECUNDARIA : COR_CARD,
             borderRadius: '6px', padding: '32px',
-            border: destaque ? `2px solid ${corPrimaria}` : '2px solid transparent',
+            border: destaque ? `2px solid ${COR_PRIMARIA}` : '2px solid transparent',
             boxShadow: destaque ? '0 8px 32px rgba(9,132,227,0.15)' : '0 2px 8px rgba(0,0,0,0.06)',
             position: 'relative',
           }}>
             {destaque && (
               <div style={{
                 position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)',
-                background: corPrimaria, color: '#fff', fontSize: '11px', fontWeight: 600,
+                background: COR_PRIMARIA, color: '#fff', fontSize: '11px', fontWeight: 600,
                 padding: '4px 14px', borderRadius: '4px', whiteSpace: 'nowrap',
               }}>Mais popular</div>
             )}
-            <h3 style={{ fontSize: '15px', fontWeight: 600, color: destaque ? '#fff' : corTexto, marginBottom: '4px' }}>{nome}</h3>
-            <p style={{ fontSize: '12px', color: destaque ? 'rgba(255,255,255,0.45)' : corTextoSuave, marginBottom: '20px' }}>{desc}</p>
+            <h3 style={{ fontSize: '15px', fontWeight: 600, color: destaque ? '#fff' : COR_TEXTO, marginBottom: '4px' }}>{nome}</h3>
+            <p style={{ fontSize: '12px', color: destaque ? 'rgba(255,255,255,0.45)' : COR_TEXTO_SUAVE, marginBottom: '20px' }}>{desc}</p>
             <div style={{ marginBottom: '24px' }}>
-              <span style={{ fontSize: '32px', fontWeight: 700, color: destaque ? '#fff' : corTexto }}>{preco}</span>
-              <span style={{ fontSize: '13px', color: destaque ? 'rgba(255,255,255,0.45)' : corTextoSuave }}>{periodo}</span>
+              <span style={{ fontSize: '32px', fontWeight: 700, color: destaque ? '#fff' : COR_TEXTO }}>{preco}</span>
+              <span style={{ fontSize: '13px', color: destaque ? 'rgba(255,255,255,0.45)' : COR_TEXTO_SUAVE }}>{periodo}</span>
             </div>
             <div style={{ borderTop: `1px solid ${destaque ? 'rgba(255,255,255,0.1)' : '#d0d0ca'}`, paddingTop: '20px', marginBottom: '24px' }}>
               {features.map((f) => (
                 <div key={f} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-                  <span style={{ color: corSucesso, fontSize: '12px', fontWeight: 700 }}>✓</span>
-                  <span style={{ fontSize: '13px', color: destaque ? 'rgba(255,255,255,0.65)' : corTextoSuave }}>{f}</span>
+                  <span style={{ color: COR_SUCESSO, fontSize: '12px', fontWeight: 700 }}>✓</span>
+                  <span style={{ fontSize: '13px', color: destaque ? 'rgba(255,255,255,0.65)' : COR_TEXTO_SUAVE }}>{f}</span>
                 </div>
               ))}
             </div>
             <Link to="/registro" style={{
               display: 'block', textAlign: 'center',
-              background: destaque ? corPrimaria : 'transparent',
-              color: destaque ? '#fff' : corPrimaria,
-              border: destaque ? 'none' : `1px solid ${corPrimaria}`,
+              background: destaque ? COR_PRIMARIA : 'transparent',
+              color: destaque ? '#fff' : COR_PRIMARIA,
+              border: destaque ? 'none' : `1px solid ${COR_PRIMARIA}`,
               padding: '10px', borderRadius: '4px',
               fontSize: '13px', fontWeight: 600, textDecoration: 'none',
-              transition: 'all 0.15s',
             }}>
               {nome === 'Enterprise' ? 'Falar com vendas' : 'Começar agora'}
             </Link>
@@ -370,13 +365,16 @@ function Precos() {
 }
 
 function Rodape() {
+  const { isMobile, isTablet } = useBreakpoint()
+  const colunas = isMobile ? '1fr' : isTablet ? 'repeat(2, 1fr)' : '2fr 1fr 1fr 1fr'
+
   return (
-    <footer className="rodape-section" style={{ background: corSecundaria, padding: '64px 64px 32px' }}>
-      <div className="rodape-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: '48px', marginBottom: '48px' }}>
+    <footer style={{ background: COR_SECUNDARIA, padding: isMobile ? '48px 20px 24px' : '64px 64px 32px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: colunas, gap: isMobile ? '32px' : '48px', marginBottom: '48px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
             <div style={{
-              width: '28px', height: '28px', background: corPrimaria,
+              width: '28px', height: '28px', background: COR_PRIMARIA,
               borderRadius: '4px', display: 'flex', alignItems: 'center',
               justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: '14px',
             }}>F</div>
@@ -407,7 +405,7 @@ function Rodape() {
           </div>
         ))}
       </div>
-      <div className="rodape-bottom" style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
         <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.25)' }}>
           © 2026 FinancialManager. Todos os direitos reservados.
         </p>
