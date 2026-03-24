@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const corPrimaria = '#0984e3'
@@ -8,9 +9,43 @@ const corTextoSuave = '#636e72'
 const corFundo = '#f0f0eb'
 const corCard = '#e8e8e2'
 
+const cssResponsivo = `
+  @media (max-width: 768px) {
+    .nav-container { padding: 0 20px !important; }
+    .nav-desktop { display: none !important; }
+    .nav-mobile-btn { display: block !important; }
+    
+    .hero-section { 
+      flex-direction: column !important; 
+      padding: 64px 20px 40px !important; 
+      gap: 32px !important;
+    }
+    .hero-mockup { width: 100% !important; box-sizing: border-box !important; }
+    .hero-title { font-size: 36px !important; }
+    
+    .func-section, .como-funciona-section, .precos-section { padding: 64px 20px !important; }
+    
+    .func-grid { grid-template-columns: 1fr !important; }
+    .como-funciona-grid { grid-template-columns: 1fr !important; }
+    .precos-grid { grid-template-columns: 1fr !important; }
+    
+    .rodape-section { padding: 48px 20px 24px !important; }
+    .rodape-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+    .rodape-bottom { flex-direction: column !important; gap: 16px !important; text-align: center; }
+  }
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .como-funciona-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .rodape-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  }
+  @media (min-width: 769px) {
+    .nav-mobile-btn { display: none !important; }
+  }
+`
+
 export default function LandingPage() {
   return (
     <div style={{ fontFamily: "'Inter', sans-serif", background: corFundo, color: corTexto }}>
+      <style>{cssResponsivo}</style>
       <Navbar />
       <Hero />
       <Funcionalidades />
@@ -22,8 +57,10 @@ export default function LandingPage() {
 }
 
 function Navbar() {
+  const [menuAberto, setMenuAberto] = useState(false)
+
   return (
-    <nav style={{
+    <nav className="nav-container" style={{
       position: 'sticky', top: 0, zIndex: 100,
       background: corSecundaria,
       padding: '0 64px', height: '60px',
@@ -37,7 +74,7 @@ function Navbar() {
         }}>F</div>
         <span style={{ color: '#fff', fontWeight: 600, fontSize: '15px' }}>FinancialManager</span>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+      <div className="nav-desktop" style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
         {['Funcionalidades', 'Como funciona', 'Preços'].map((item) => (
           <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} style={{
             color: 'rgba(255,255,255,0.55)', fontSize: '13px',
@@ -48,7 +85,7 @@ function Navbar() {
           >{item}</a>
         ))}
       </div>
-      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+      <div className="nav-desktop" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
         <Link to="/login" style={{
           color: 'rgba(255,255,255,0.7)', fontSize: '13px',
           textDecoration: 'none', fontWeight: 500,
@@ -60,13 +97,42 @@ function Navbar() {
           transition: 'background 0.15s',
         }}>Começar grátis</Link>
       </div>
+
+      <button className="nav-mobile-btn" onClick={() => setMenuAberto(!menuAberto)} style={{
+        background: 'transparent', border: 'none', color: '#fff', fontSize: '24px', cursor: 'pointer', padding: '0'
+      }}>
+        ☰
+      </button>
+
+      {menuAberto && (
+        <div style={{
+          position: 'absolute', top: '60px', left: 0, right: 0,
+          background: corSecundaria, padding: '20px', borderTop: '1px solid rgba(255,255,255,0.1)',
+          display: 'flex', flexDirection: 'column', gap: '16px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+        }}>
+          {['Funcionalidades', 'Como funciona', 'Preços'].map((item) => (
+            <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} 
+              onClick={() => setMenuAberto(false)}
+              style={{ color: '#fff', fontSize: '15px', textDecoration: 'none' }}>
+              {item}
+            </a>
+          ))}
+          <div style={{ height: '1px', background: 'rgba(255,255,255,0.1)', margin: '8px 0' }} />
+          <Link to="/login" onClick={() => setMenuAberto(false)} style={{ color: '#fff', fontSize: '15px', textDecoration: 'none' }}>Entrar</Link>
+          <Link to="/registro" onClick={() => setMenuAberto(false)} style={{
+            background: corPrimaria, color: '#fff', textAlign: 'center',
+            padding: '10px', borderRadius: '4px', fontSize: '15px', fontWeight: 600, textDecoration: 'none'
+          }}>Começar grátis</Link>
+        </div>
+      )}
     </nav>
   )
 }
 
 function Hero() {
   return (
-    <section style={{
+    <section className="hero-section" style={{
       background: corSecundaria,
       padding: '96px 64px 80px',
       display: 'flex', alignItems: 'center',
@@ -81,7 +147,7 @@ function Hero() {
         }}>
           Novo — Relatórios em tempo real
         </div>
-        <h1 style={{
+        <h1 className="hero-title" style={{
           fontSize: '48px', fontWeight: 700, color: '#fff',
           lineHeight: 1.15, marginBottom: '20px', letterSpacing: '-0.02em',
         }}>
@@ -113,7 +179,7 @@ function Hero() {
         </p>
       </div>
 
-      <div style={{
+      <div className="hero-mockup" style={{
         background: '#e8e8e2', borderRadius: '6px',
         padding: '24px', width: '440px', flexShrink: 0,
         boxShadow: '0 24px 64px rgba(0,0,0,0.3)',
@@ -153,7 +219,7 @@ function Funcionalidades() {
   ]
 
   return (
-    <section id="funcionalidades" style={{ padding: '96px 64px', background: corFundo }}>
+    <section id="funcionalidades" className="func-section" style={{ padding: '96px 64px', background: corFundo }}>
       <div style={{ textAlign: 'center', marginBottom: '64px' }}>
         <h2 style={{ fontSize: '32px', fontWeight: 700, color: corTexto, marginBottom: '12px' }}>
           Tudo que você precisa para controlar suas finanças
@@ -162,7 +228,7 @@ function Funcionalidades() {
           Funcionalidades pensadas para pequenas e médias empresas que querem ter controle real do seu dinheiro.
         </p>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', maxWidth: '1100px', margin: '0 auto' }}>
+      <div className="func-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', maxWidth: '1100px', margin: '0 auto' }}>
         {items.map(({ icone, titulo, desc }) => (
           <div key={titulo} style={{
             background: corCard, borderRadius: '6px', padding: '28px',
@@ -196,7 +262,7 @@ function ComoFunciona() {
   ]
 
   return (
-    <section id="como-funciona" style={{ padding: '96px 64px', background: corSecundaria }}>
+    <section id="como-funciona" className="como-funciona-section" style={{ padding: '96px 64px', background: corSecundaria }}>
       <div style={{ textAlign: 'center', marginBottom: '64px' }}>
         <h2 style={{ fontSize: '32px', fontWeight: 700, color: '#fff', marginBottom: '12px' }}>
           Como funciona
@@ -205,7 +271,7 @@ function ComoFunciona() {
           Comece a usar em minutos. Sem complicação.
         </p>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '32px', maxWidth: '1100px', margin: '0 auto' }}>
+      <div className="como-funciona-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '32px', maxWidth: '1100px', margin: '0 auto' }}>
         {passos.map(({ num, titulo, desc }) => (
           <div key={num} style={{ textAlign: 'center' }}>
             <div style={{
@@ -246,7 +312,7 @@ function Precos() {
   ]
 
   return (
-    <section id="preços" style={{ padding: '96px 64px', background: corFundo }}>
+    <section id="preços" className="precos-section" style={{ padding: '96px 64px', background: corFundo }}>
       <div style={{ textAlign: 'center', marginBottom: '64px' }}>
         <h2 style={{ fontSize: '32px', fontWeight: 700, color: corTexto, marginBottom: '12px' }}>
           Planos e preços
@@ -255,7 +321,7 @@ function Precos() {
           Comece gratuitamente e faça upgrade quando precisar.
         </p>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', maxWidth: '900px', margin: '0 auto' }}>
+      <div className="precos-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', maxWidth: '900px', margin: '0 auto' }}>
         {planos.map(({ nome, preco, periodo, desc, destaque, features }) => (
           <div key={nome} style={{
             background: destaque ? corSecundaria : corCard,
@@ -305,8 +371,8 @@ function Precos() {
 
 function Rodape() {
   return (
-    <footer style={{ background: corSecundaria, padding: '64px 64px 32px' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: '48px', marginBottom: '48px' }}>
+    <footer className="rodape-section" style={{ background: corSecundaria, padding: '64px 64px 32px' }}>
+      <div className="rodape-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: '48px', marginBottom: '48px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
             <div style={{
@@ -341,12 +407,12 @@ function Rodape() {
           </div>
         ))}
       </div>
-      <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="rodape-bottom" style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.25)' }}>
           © 2026 FinancialManager. Todos os direitos reservados.
         </p>
         <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.25)' }}>
-          Desenvolvido por Pedro Luiz Pompeu da Silva
+          Desenvolvido por KreaKodo
         </p>
       </div>
     </footer>
