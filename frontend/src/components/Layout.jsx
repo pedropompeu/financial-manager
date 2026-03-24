@@ -8,6 +8,7 @@ const itensNav = [
   { label: 'Categorias', path: '/categorias', icone: '⊞' },
   { label: 'Usuários', path: '/usuarios', icone: '◉' },
   { label: 'Configurações', path: '/configuracoes', icone: '⚙' },
+  { label: 'Assistente IA', path: '/assistente-ia', icone: '✦', pro: true },
 ]
 
 const titulos = {
@@ -91,7 +92,7 @@ export default function Layout({ children }) {
         )}
 
         <nav style={{ flex: 1, padding: '8px' }}>
-          {itensNav.map(({ label, path, icone }) => (
+          {itensNav.map(({ label, path, icone, pro }) => (
             <NavLink key={path} to={path} style={({ isActive }) => ({
               display: 'flex', alignItems: 'center', gap: '10px',
               padding: '9px 10px', borderRadius: '4px', marginBottom: '2px',
@@ -104,7 +105,19 @@ export default function Layout({ children }) {
               transition: 'all 0.15s',
             })}>
               <span style={{ fontSize: '14px', flexShrink: 0 }}>{icone}</span>
-              {!recolhida && label}
+              {!recolhida && (
+                <span style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  {label}
+                  {pro && (
+                    <span style={{
+                      fontSize: '9px', fontWeight: 700, padding: '2px 6px',
+                      background: 'linear-gradient(135deg, #f39c12, #e67e22)',
+                      color: '#fff', borderRadius: '4px', letterSpacing: '0.05em',
+                      flexShrink: 0,
+                    }}>PRO</span>
+                  )}
+                </span>
+              )}
             </NavLink>
           ))}
         </nav>

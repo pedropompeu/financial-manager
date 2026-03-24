@@ -11,6 +11,7 @@ import LandingPage from './pages/LandingPage'
 import BemVindo from './pages/BemVindo'
 import Onboarding from './pages/Onboarding'
 import Configuracoes from './pages/Configuracoes'
+import AssistenteIAPro from './pages/AssistenteIAPro'
 
 function RotaProtegida({ children }) {
   const { usuario, carregando } = useAuth()
@@ -50,6 +51,7 @@ export default function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/bem-vindo" element={<BemVindo />} />
       <Route path="/configuracoes" element={<RotaProtegida><Configuracoes /></RotaProtegida>} />
+      <Route path="/assistente-ia" element={<RotaProtegida><AssistenteIAPro /></RotaProtegida>} />
       <Route path="/onboarding" element={<Onboarding />} />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
